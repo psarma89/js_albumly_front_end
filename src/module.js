@@ -22,7 +22,7 @@ class Module{
             </div>
             <div class="form-group text-center">
               <span class= "text-danger" data-value="email-error"></span><br><br>
-              <button type="submit" class="btn btn-primary btn-lg" data-value="create">Create</button>
+              <button type="submit" class="btn btn-primary btn-lg" data-value="create-user">Create User</button>
             </div>
           </form>
         </div>
@@ -31,7 +31,50 @@ class Module{
   }
 
   static renderProfilePage(obj){
-    return `<h1></h1>`
+    console.log(User.all[0])
+    return `<nav class="navbar navbar-inverse">
+            <div class="container-fluid">
+              <div class="navbar-header">
+                <a class="navbar-brand" href="#">Albumly</a>
+              </div>
+              <ul class="nav navbar-nav">
+                <li class="active"><a href="#" data-value="home">Home</a></li>
+                <li class="dropdown">
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="#">Events<span class="caret"></span></a>
+                  <ul class="dropdown-menu" data-value="event-ul">
+                    ${Module.createEventLi(obj.events)}
+                  </ul>
+                </li>
+              </ul>
+              <form class="navbar-form navbar-right" action="/">
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="Event Title" data-value="create-event-input">
+                </div>
+                <button type="submit" class="btn btn-primary" data-value="create-event" data-userid=${obj.id}>Create Event</button>
+              </form>
+            </div>
+          </nav>
+          <div class="container-fluid">
+            <div class="row text-center">
+              <div class="col-xs-4 col-xs-offset-4">
+                <h1>${obj.firstName}'s Profile</h1><br>
+                <div class="table-responsive">
+                  <table class="table table-bordered table-striped">
+                    <thead>
+                      <tr class="info">
+                        <th class="text-center">Title</th>
+                        <th class="text-center">Number To Text</th>
+                      </tr>
+                    </thead>
+                    <tbody data-value="event-table-body">
+                      ${Module.createEventTableRows(obj.events)}
+                    </tbody>
+                  </table>
+                </div>
+
+              </div>
+            </div>
+          </div>`
   }
 
   static renderLoginPage(){
@@ -52,4 +95,22 @@ class Module{
           </div>`
   }
 
+  static createEventLi(events){
+    let eventLi = ""
+    events.forEach(event => {
+      eventLi += `<li><a href="#" data-value=${event.id}>${event.title}</a></li>`
+    })
+    return eventLi
+  }
+
+  static createEventTableRows(events){
+    let eventRows = ""
+    events.forEach(event => {
+      eventRows += `<tr>
+        <td>${event.title}</td>
+        <td>${event.twilioNumber}</td>
+      </tr>`
+    })
+    return eventRows
+  }
 }

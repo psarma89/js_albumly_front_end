@@ -24,16 +24,15 @@ class User {
   populateMedia(array){
     array.forEach(medium => {
       const newMedium = new Medium(medium)
-      this.events.push(newMedium)
+      this.media.push(newMedium)
     })
   }
 
   populateMessages(array){
     array.forEach(message => {
       const newMessage = new Message(message)
-      this.events.push(newMessage)
+      this.messages.push(newMessage)
     })
   }
-}
 
-User.all = []
+}
