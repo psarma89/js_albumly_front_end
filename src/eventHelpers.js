@@ -1,11 +1,15 @@
 class EventHelpers{
+  static loadProfileMemory(userData){
+    User.all = []
+    const newUser = new User(userData)
+    MAINDIV.innerHTML = Module.renderProfilePage(newUser)
+  }
+
   static findProfile(email){
     if (email) {
       Adapter.getUserDataAPI(email).then(userData => {
         if (userData) {
-          User.all = []
-          const newUser = new User(userData)
-          MAINDIV.innerHTML = Module.renderProfilePage(newUser)
+          EventHelpers.loadProfileMemory(userData)
         }else {
           MAINDIV.innerHTML = Module.renderSignUpForm(email)
         }
@@ -16,11 +20,11 @@ class EventHelpers{
   }
 
   static createProfile(obj){
-    Adapter.createUserAPI(obj).then(json => {
-      if (json["errors"]) {
-        document.querySelector("span[data-value='email-error']").innerHTML = json["errors"][0]
+    Adapter.createUserAPI(obj).then(userData => {
+      if (userData["errors"]) {
+        document.querySelector("span[data-value='email-error']").innerHTML = userData["errors"][0]
       }else {
-        MAINDIV.innerHTML = Module.renderProfilePage(json)
+        EventHelpers.loadProfileMemory(userData)
       }
     })
   }
@@ -31,14 +35,22 @@ class EventHelpers{
 
   static createEvent(title, userId){
     if (title) {
-      Adapter.createEventAPI(title, userId).then(json => {
-        EventHelpers.findProfile(json.user.email)
+      Adapter.createEventAPI(title, userId).then(userData => {
+        EventHelpers.loadProfileMemory(userData)
       })
     }
   }
 
-  static showEventMedia(){
-    
+  static deleteEvent(eventId){
+    if (eventId) {
+      Adapter.deleteEventAPI(eventId).then(userData => {
+        EventHelpers.loadProfileMemory(userData)
+      })
+    }
+  }
+
+  static showEventMedia(eventId){
+
   }
 
 }

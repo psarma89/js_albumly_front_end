@@ -64,6 +64,7 @@ class Module{
                       <tr class="info">
                         <th class="text-center">Title</th>
                         <th class="text-center">Number To Text</th>
+                        <th class="text-center">Remove</th>
                       </tr>
                     </thead>
                     <tbody data-value="event-table-body">
@@ -98,7 +99,7 @@ class Module{
   static createEventLi(events){
     let eventLi = ""
     events.forEach(event => {
-      eventLi += `<li><a href="#" data-value=${event.id}>${event.title}</a></li>`
+      eventLi += `<li><a href="#" data-eventid=${event.id} data-value="show-user-event">${event.title}</a></li>`
     })
     return eventLi
   }
@@ -109,6 +110,7 @@ class Module{
       eventRows += `<tr>
         <td>${event.title}</td>
         <td>${event.twilioNumber}</td>
+        <td><a href="#" data-eventid=${event.id} data-value="delete-user-event">Delete</a></td>
       </tr>`
     })
     return eventRows

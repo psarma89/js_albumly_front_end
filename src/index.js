@@ -21,7 +21,14 @@ document.addEventListener('DOMContentLoaded', () => {
       EventHelpers.findProfile(User.all[0].email)
     }else if (clicked === "create-event") {
       const eventInput = document.querySelector("input[data-value='create-event-input']").value
-      EventHelpers.createEvent(eventInput, e.target.dataset.userid)
+      const userId = parseInt(e.target.dataset.userid)
+      EventHelpers.createEvent(eventInput, userId)
+    }else if (clicked === "delete-user-event") {
+      const eventId = parseInt(e.target.dataset.eventid)
+      EventHelpers.deleteEvent(eventId)
+    }else if (clicked === "show-user-event") {
+      const eventId = parseInt(e.target.dataset.eventid)
+      EventHelpers.showEventMedia(eventId)
     }
   })
 

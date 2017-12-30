@@ -24,4 +24,14 @@ class Adapter{
       body: JSON.stringify({title: title, userId: userId})
     }).then(resp => resp.json())
   }
+
+  static deleteEventAPI(eventId){
+    return fetch(`http://localhost:3000/api/v1/events/${eventId}`,{
+      method: 'DELETE',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
+    }).then(resp => resp.json())
+  }
 }
