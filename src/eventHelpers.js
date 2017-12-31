@@ -56,4 +56,10 @@ class EventHelpers{
     })
   }
 
+  static showSlideShow(eventId){
+    Adapter.getEventAPI(eventId).then(event => {
+      const contentDiv = document.querySelector("div.user-content")
+      contentDiv.innerHTML = Module.renderSlideShow(event)
+    })
+  }
 }

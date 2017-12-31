@@ -4,8 +4,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Using data-value attribute to make selecting elements uniform
   MAINDIV.addEventListener('click', e => {
-    // e.preventDefault()
-    console.log(e.target)
+    e.preventDefault()
+    // console.log(e.target)
     const clicked = e.target.dataset.value
     if (clicked === "sign-in") {
       const emailInput = document.querySelector("input[data-value='email-input']").value
@@ -29,6 +29,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }else if (clicked === "show-user-event") {
       const eventId = parseInt(e.target.dataset.eventid)
       EventHelpers.showEventMedia(eventId)
+    }else if (clicked === "slide-show") {
+      const eventId = parseInt(e.target.dataset.eventid)
+      EventHelpers.showSlideShow(eventId)
     }
   })
 
