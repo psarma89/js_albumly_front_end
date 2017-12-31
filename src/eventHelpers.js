@@ -1,5 +1,5 @@
 class EventHelpers{
-  static loadProfileMemory(userData){
+  static loadProfileInMemory(userData){
     User.all = []
     const newUser = new User(userData)
     MAINDIV.innerHTML = Module.renderProfilePage(newUser)
@@ -9,7 +9,7 @@ class EventHelpers{
     if (email) {
       Adapter.getUserDataAPI(email).then(userData => {
         if (userData) {
-          EventHelpers.loadProfileMemory(userData)
+          EventHelpers.loadProfileInMemory(userData)
         }else {
           MAINDIV.innerHTML = Module.renderSignUpForm(email)
         }
@@ -24,7 +24,7 @@ class EventHelpers{
       if (userData["errors"]) {
         document.querySelector("span[data-value='email-error']").innerHTML = userData["errors"][0]
       }else {
-        EventHelpers.loadProfileMemory(userData)
+        EventHelpers.loadProfileInMemory(userData)
       }
     })
   }
@@ -36,7 +36,7 @@ class EventHelpers{
   static createEvent(title, userId){
     if (title) {
       Adapter.createEventAPI(title, userId).then(userData => {
-        EventHelpers.loadProfileMemory(userData)
+        EventHelpers.loadProfileInMemory(userData)
       })
     }
   }
@@ -44,13 +44,16 @@ class EventHelpers{
   static deleteEvent(eventId){
     if (eventId) {
       Adapter.deleteEventAPI(eventId).then(userData => {
-        EventHelpers.loadProfileMemory(userData)
+        EventHelpers.loadProfileInMemory(userData)
       })
     }
   }
 
   static showEventMedia(eventId){
-
+    Adapter.getEventAPI(eventId).then(event => {
+      const contentDiv = document.querySelector("div.user-content")
+      contentDiv.innerHTML = Module.renderEventMedia(event)
+    })
   }
 
 }

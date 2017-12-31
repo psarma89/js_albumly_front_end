@@ -34,4 +34,8 @@ class Adapter{
       }
     }).then(resp => resp.json())
   }
+
+  static getEventAPI(eventId){
+    return fetch(`http://localhost:3000/api/v1/events/${eventId}`).then(resp => resp.json())
+  }
 }

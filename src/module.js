@@ -30,7 +30,7 @@ class Module{
     </div>`
   }
 
-  static renderProfilePage(obj){
+  static renderProfilePage(user){
     console.log(User.all[0])
     return `<nav class="navbar navbar-inverse">
             <div class="container-fluid">
@@ -42,22 +42,17 @@ class Module{
                 <li class="dropdown">
                   <a class="dropdown-toggle" data-toggle="dropdown" href="#">Events<span class="caret"></span></a>
                   <ul class="dropdown-menu" data-value="event-ul">
-                    ${Module.createEventLi(obj.events)}
+                    ${Module.createEventLi(user.events)}
                   </ul>
                 </li>
               </ul>
-              <form class="navbar-form navbar-right" action="/">
-                <div class="form-group">
-                  <input type="text" class="form-control" placeholder="Event Title" data-value="create-event-input">
-                </div>
-                <button type="submit" class="btn btn-primary" data-value="create-event" data-userid=${obj.id}>Create Event</button>
-              </form>
             </div>
           </nav>
+          <div class="user-content">
           <div class="container-fluid">
             <div class="row text-center">
               <div class="col-xs-4 col-xs-offset-4">
-                <h1>${obj.firstName}'s Profile</h1><br>
+                <h1>${user.firstName}'s Profile</h1><br>
                 <div class="table-responsive">
                   <table class="table table-bordered table-striped">
                     <thead>
@@ -68,14 +63,18 @@ class Module{
                       </tr>
                     </thead>
                     <tbody data-value="event-table-body">
-                      ${Module.createEventTableRows(obj.events)}
+                      ${Module.createEventTableRows(user.events)}
                     </tbody>
                   </table>
                 </div>
-
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="Event Title" data-value="create-event-input">
+                </div>
+                <button type="submit" class="btn btn-primary" data-value="create-event" data-userid=${user.id}>Create Event</button>
               </div>
             </div>
-          </div>`
+          </div>
+        </div>`
   }
 
   static renderLoginPage(){
@@ -99,7 +98,7 @@ class Module{
   static createEventLi(events){
     let eventLi = ""
     events.forEach(event => {
-      eventLi += `<li><a href="#" data-eventid=${event.id} data-value="show-user-event">${event.title}</a></li>`
+      eventLi += `<li><a href="#" data-eventid=${event.id} data-userid=${event.userId} data-value="show-user-event">${event.title}</a></li>`
     })
     return eventLi
   }
@@ -114,5 +113,67 @@ class Module{
       </tr>`
     })
     return eventRows
+  }
+
+  static renderEventMedia(event){
+    return `<div class="user-content-images">
+              <div class="container-fluid">
+                <div class="row">
+                  <h2>${event.title} Images</h2>
+                </div>
+                <div class="row">
+                  ${Module.createMediaImages(event)}
+                </div>
+              </div>
+          </div>
+          <div class="user-content-videos">
+              <div class="container-fluid">
+                <div class="row">
+                  <h2>${event.title} Videos</h2>
+                </div>
+                <div class="row">
+                  ${Module.createMediaVideos(event)}
+                </div>
+              </div>
+          </div>`
+  }
+
+  static createMediaImages(event){
+    let mediaImages = ""
+    const images = event.media.filter(medium => medium.media_type === "image")
+    images.forEach(image => {
+      const comment = event.messages.find(message => message.medium_id === image.id)
+      mediaImages += `<div class="col-xs-4">
+                        <div class="thumbnail">
+                          <a href="${image.url}">
+                            <img src="${image.url}" style="width:100%">
+                            <div class="caption" data-mediaid=${image.id}>
+                              ${comment ? comment.body : ""}
+                            </div>
+                          </a>
+                        </div>
+                      </div>`
+    })
+    return mediaImages
+  }
+  static createMediaVideos(event){
+    let mediaVideos = ""
+    const videos = event.media.filter(medium => medium.media_type === "video")
+    videos.forEach(video => {
+      const comment = event.messages.find(message => message.medium_id === video.id)
+      mediaVideos += `<div class="col-xs-4">
+                          <div class="embed-responsive embed-responsive-16by9">
+                            <a href="${video.url}">
+                              <video class="embed-responsive-item" controls>
+                                <source src="${video.url}" type="video/3gpp">
+                              </video>
+                            </a>
+                          </div>
+                          <div class="caption" data-mediaid=${video.id}>
+                            ${comment ? comment.body : ""}
+                          </div>
+                      </div>`
+    })
+    return mediaVideos
   }
 }

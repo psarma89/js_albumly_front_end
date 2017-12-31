@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Using data-value attribute to make selecting elements uniform
   MAINDIV.addEventListener('click', e => {
-    e.preventDefault()
+    // e.preventDefault()
     console.log(e.target)
     const clicked = e.target.dataset.value
     if (clicked === "sign-in") {
